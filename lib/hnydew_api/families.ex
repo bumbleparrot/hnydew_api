@@ -53,4 +53,9 @@ defmodule HnydewApi.Families do
     |> Family.unique_code_changeset()
     |> Repo.update()
   end
+
+  def delete_family(family) do
+    Repo.delete(family)
+  end
+
 end

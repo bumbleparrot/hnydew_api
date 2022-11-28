@@ -40,17 +40,26 @@ defmodule HnydewApiWeb.FamilyController do
 
   def generate_new_unique_code(conn, %{"id" => id}) do
     family = Families.get_family(id)
-
+5
     with {:ok, %Family{} = family} <- Families.generate_new_unique_code(family) do
       render(conn, "show.json", family: family)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    family = Families.get_family(id)
-
-    with {:ok, %Family{}} <- Families.delete_family(family) do
-      send_resp(conn, :no_content, "")
+    # Case statement handling if we can get the family record we want to delete.
+    case Families.get_family(id) do
+      # Check if the get_family response is a Family struct. If so, assign it and keep going.
+      family = %Family{} ->
+        Families.delete_family(family)
+        send_resp(conn, :no_content, "")
+        |> halt()
+      # When get_family doesn't find the record, it returns nil.
+      nil ->
+        send_resp(conn, :not_found, "")
+      # This is the default response, we should never get here.
+      _ ->
+        send_resp(conn, :error, "")
     end
   end
 end

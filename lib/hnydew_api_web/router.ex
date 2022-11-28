@@ -36,8 +36,10 @@ defmodule HnydewApiWeb.Router do
     post "/families", FamilyController, :create
     patch "/families/:id", FamilyController, :update
     patch "/families/:id/unique-code", FamilyController, :generate_new_unique_code
+    delete "/families/:id", FamilyController, :delete
 
     # Users API Routes
+    get "/users", UserController, :index
     post "/users/register", UserRegistrationController, :create
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
