@@ -1,0 +1,77 @@
+version: "3.9"
+networks:
+  hnydew-network: 
+    name: hnydew-network
+    driver: bridge
+
+volumes:
+  postgres-data:
+
+services:
+  postgres: # This is the postgres database.
+    profiles: ["all", "local-dev"]
+    networks: 
+      - ${DOCKER_COMPOSE_NETWORK}
+    build: 
+      context: ./
+      dockerfile: dockerfile-postgres
+    volumes: # Persistent volume for postgres data.
+      - ./postgres-data:/var/lib/postgresql/data
+    ports: 
+      - "5432:5432"
+    healthcheck: # This is how we check that the db service is up and running.
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  phoenix: # This is the elixir phoenix app.
+    profiles: ["all"]
+    depends_on: 
+      postgres: # This means we must wait for the postgres service to be ready via health check.
+        condition: service_healthy
+    networks: 
+        - ${DOCKER_COMPOSE_NETWORK}
+    build: 
+      context: ./
+      dockerfile: dockerfile-phoenix
+    ports: 
+      - "4000:4000"
+    healthcheck: # This is how we check that the phoenix service is up and running.
+      test: ["CMD-SHELL", "ps aux | grep \"phx.sever\""] # TODO: Could possibly improve the check here.
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nginx: # This is the main webserver.
+    profiles: ["all"]
+    depends_on: 
+      phoenix: # This means we must wait for the phoenix service to be ready via health check.
+        condition: service_healthy
+    networks:
+      - ${DOCKER_COMPOSE_NETWORK}
+    build: 
+      context: ./
+      dockerfile: dockerfile-nginx
+    ports: 
+      - "8080:8080"
+    healthcheck: # This is how we check that the phoenix service is up and running.
+      test: ["CMD-SHELL", "service nginx status"] # TODO: Could possibly improve the check here.
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  varnish: # This is the varnish cache in front of nginx.
+    profiles: ["all"]
+    depends_on:
+      - nginx
+    networks:
+      - ${DOCKER_COMPOSE_NETWORK}
+    build: 
+      context: ./
+      dockerfile: dockerfile-varnish
+    ports: 
+      - "80:80"
+    
