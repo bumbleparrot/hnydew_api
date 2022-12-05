@@ -4,7 +4,6 @@ defmodule HnydewApiWeb.UserRegistrationController do
   alias HnydewApi.Accounts
   alias HnydewApi.Accounts.User
   alias HnydewApiWeb.UserAuth
-  alias HnydewApiWeb.Error
 
   def new(conn, _params) do
     changeset = Accounts.change_user_registration(%User{})
@@ -18,13 +17,6 @@ defmodule HnydewApiWeb.UserRegistrationController do
         conn
         |> put_view(HnydewApiWeb.UserView)
         |> render("show.json", user: user)
-
-      {:error, changeset} ->
-        errors = Error.translate_error(changeset)
-
-        conn
-        |> put_view(HnydewApiWeb.ErrorView)
-        |> render("index.json", errors: errors)
     end
   end
 
@@ -45,4 +37,5 @@ defmodule HnydewApiWeb.UserRegistrationController do
         render(conn, "new.html", changeset: changeset)
     end
   end
+
 end
