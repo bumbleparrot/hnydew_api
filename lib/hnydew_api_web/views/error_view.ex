@@ -1,7 +1,6 @@
 defmodule HnydewApiWeb.ErrorView do
   use HnydewApiWeb, :view
   alias HnydewApiWeb.ErrorView
-  alias HnydewApiWeb.Error
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.
