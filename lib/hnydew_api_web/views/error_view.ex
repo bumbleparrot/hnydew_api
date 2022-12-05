@@ -1,5 +1,7 @@
 defmodule HnydewApiWeb.ErrorView do
   use HnydewApiWeb, :view
+  alias HnydewApiWeb.ErrorView
+  alias HnydewApiWeb.Error
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.
@@ -13,4 +15,16 @@ defmodule HnydewApiWeb.ErrorView do
   def template_not_found(template, _assigns) do
     Phoenix.Controller.status_message_from_template(template)
   end
+
+  def render("index.json", %{errors: errors}) do
+    %{data: render_many(errors, ErrorView, "error.json")}
+  end
+
+  def render("error.json", %{error: error}) do
+    %{
+      error_code: error.error_code,
+      error_message: error.error_message
+    }
+  end
+
 end
