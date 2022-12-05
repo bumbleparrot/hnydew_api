@@ -4,6 +4,7 @@ defmodule HnydewApi.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias HnydewApi.Repo
 
   alias HnydewApi.Accounts.{User, UserToken, UserNotifier}
@@ -61,6 +62,13 @@ defmodule HnydewApi.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   ## User registration
+
+  def register_user(attrs) when is_map_key(attrs, "family_id") do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Ecto.Changeset.foreign_key_constraint(:family_id)
+    |> Repo.insert()
+  end
 
   @doc """
   Registers a user.
