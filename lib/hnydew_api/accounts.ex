@@ -4,7 +4,6 @@ defmodule HnydewApi.Accounts do
   """
 
   import Ecto.Query, warn: false
-  import Ecto.Changeset
   alias HnydewApi.Repo
 
   alias HnydewApi.Accounts.{User, UserToken, UserNotifier}

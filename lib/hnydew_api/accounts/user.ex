@@ -2,6 +2,9 @@ defmodule HnydewApi.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias HnydewApi.Tasks.{Task}
+  alias HnydewApi.Families.{Family}
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
@@ -10,7 +13,9 @@ defmodule HnydewApi.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-    belongs_to :family, EctoAssoc.Family
+    belongs_to :family, Family
+    has_many :tasks, Task
+
     timestamps()
   end
 
