@@ -1,8 +1,8 @@
 defmodule HnydewApiWeb.UserSettingsController do
   use HnydewApiWeb, :controller
-
   alias HnydewApi.Accounts
   alias HnydewApiWeb.UserAuth
+  alias HnydewApiWeb.Router.Helpers.{}
 
   plug :assign_email_and_password_changesets
 
