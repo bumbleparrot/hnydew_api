@@ -2,7 +2,6 @@ defmodule HnydewApiWeb.UserController do
   use HnydewApiWeb, :controller
 
   alias HnydewApi.Accounts
-  alias HnydewApi.Accounts.User
 
   action_fallback HnydewApiWeb.FallbackController
 

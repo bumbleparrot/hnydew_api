@@ -8,8 +8,9 @@ defmodule HnydewApi.Families.Family do
   schema "families" do
     field :name, :string
     field :uniqueCode, :string
-    has_many :users, HnydewApi.Accounts.User
 
+    has_many :users, HnydewApi.Accounts.User
+    has_many :tasks, HnydewApi.Tasks.Task
     timestamps()
   end
 
