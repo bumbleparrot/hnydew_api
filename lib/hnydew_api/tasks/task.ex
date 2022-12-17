@@ -3,10 +3,13 @@ defmodule HnydewApi.Tasks.Task do
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
 
   schema "tasks" do
-    field :family, :string
     field :description, :string
+
+    belongs_to :user, HnydewApi.Accounts.User
+    belongs_to :family, HnydewApi.Families.Family
 
     timestamps()
   end
@@ -19,8 +22,8 @@ defmodule HnydewApi.Tasks.Task do
 
   def create_task_changeset(task, attrs) do
     task
-    |> cast(attrs, [:family, :description])
-    |> validate_required([:family, :description])
+    |> cast(attrs, [:user_id, :family_id, :description])
+    |> validate_required([:user_id, :family_id, :description])
     |> validate_length(:description, max: 256, min: 3, count: :bytes)
   end
 

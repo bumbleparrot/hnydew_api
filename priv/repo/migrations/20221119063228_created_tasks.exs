@@ -6,7 +6,6 @@ defmodule HnydewApi.Repo.Migrations.CreatedTasks do
 
     create table(:tasks, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false
-      add :family, :string, null: false
       add :description, :string, null: false
       timestamps()
     end
