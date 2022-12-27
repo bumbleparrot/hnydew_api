@@ -49,6 +49,8 @@ defmodule HnydewApiWeb.Router do
     get "/tasks", TaskController, :index
     post "/tasks", TaskController, :create
     get "/tasks/:id", TaskController, :show
+    get "/tasks/user/:user_id", TaskController, :get_tasks_by_user_id
+    get "/tasks/family/:family_id", TaskController, :get_tasks_by_family_id
   end
 
 

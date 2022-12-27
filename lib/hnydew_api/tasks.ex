@@ -22,4 +22,15 @@ defmodule HnydewApi.Tasks do
     def get_task(id) do
       Repo.get(Task, id)
     end
+
+    def get_tasks_by_user_id(user_id) do
+      q = from s in Task, where: s.user_id == ^user_id, select: s
+      Repo.all(q)
+    end
+
+    def get_tasks_by_family_id(family_id) do
+      Task
+      |> where(family_id: ^family_id)
+      |> Repo.all()
+    end
 end
