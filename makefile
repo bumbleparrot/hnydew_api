@@ -14,6 +14,10 @@ local:
 	@$(MAKE) compose-containers-local
 	@$(MAKE) run-local-phoenix
 
+local-db-only:
+	@$(MAKE) clean
+	@$(MAKE) build-containers-local
+	@$(MAKE) compose-containers-local
 
 build-containers:
 	@echo "Build all the containers in sequence."
